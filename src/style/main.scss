@@ -1,0 +1,129 @@
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div,
+a,
+img {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+// img{ pointer-events: none; }
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+//   text-align: center;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+//   width: 100%;
+//   height: 100%;  
+  overflow: hidden;
+}
+[v-cloak]{
+    display: none;
+}
+html{
+  font-size: 3.2vw;
+}
+body{
+  height:100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #3A1064;
+}
+@function imgUrl($name){
+    @return $img-src+$name;
+}
+
+@mixin imgbg($src) {
+    background: {
+      image: url($src);
+      size: 100% 100%;
+      repeat: no-repeat;
+    }
+}
+@mixin getContent($width,$height) {
+    width: $width/7;
+    height: $height;
+}
+@mixin getLength($width,$height) {
+    width: $width/236*931*0.1vw;
+    height: $height/236*931*0.1vw;
+}
+@function getDistance($length) {
+    @return $length/236*931*0.1vw;
+}
+@mixin small-font($size) {
+    font-size: 3vw;
+    -webkit-transform-origin-x: 0;
+    -webkit-transform: scale($size);
+    // width: $width/$size;
+}
+@mixin center-small-font($size, $width) {
+    font-size: 3vw;
+    -webkit-transform-origin-x: 0;
+    -webkit-transform: scale($size) translateX(-50%);
+    width: $width/$size;
+    left: 50%;
+}
+
+@mixin click {
+    &:active {
+      -ms-transform:scale(0.95);
+       -webkit-transform:scale(0.95);
+      transform: scale(0.95);
+    }
+  }
+.click {
+   @include click;
+}
+.aniOpacity {
+    animation: 0.8s opacity2 0s ;
+    -webkit-animation: 0.5s opacity2 0s ;
+    -moz-animation: 0.8s opacity2 0s ;
+}
+@keyframes opacity2{
+    0%{opacity:0;        transform: scale(.8);}
+    70%{opacity:.3;        transform: scale(1.2); }
+    100%{opacity:1;        transform: scale(1); }
+}
+@-webkit-keyframes opacity2{
+    0%{opacity:0;        transform: scale(.8);}
+    70%{opacity:.3;        transform: scale(1.2); }
+    100%{opacity:1;        transform: scale(1); }
+}
+@-moz-keyframes opacity2{
+    0%{opacity:0;        transform: scale(.8);}
+    70%{opacity:.3;        transform: scale(1.2); }
+    100%{opacity:1;        transform: scale(1); }
+}
+.gray{
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    -o-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+}
+//伪类解决ios端滚动条问题
+.contentGrid::-webkit-scrollbar {
+    display: none;
+}
+.blur {
+    -webkit-filter: blur(2px); /* Chrome, Opera */
+    -moz-filter: blur(2px);
+    -ms-filter: blur(2px);
+    filter: blur(2px);
+}
+.clearboth{
+  clear:both;
+}

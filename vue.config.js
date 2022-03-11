@@ -42,14 +42,14 @@ const customConfigs = {
 		hotOnly: true,
 		https: false, // https:{type:Boolean}
 		open: true, //配置自动启动浏览器
-		proxy: {
-			'/Werewolf/': {
-				target: "", // 跨域地址
-				changeOrigin: true, //是否跨域
-				secure: true, //是否使用https
-				pathRewrite: { '^/': '' }
-			},
-		}
+		// proxy: {
+		// 	'/Werewolf/': {
+		// 		target: "", // 跨域地址
+		// 		changeOrigin: true, //是否跨域
+		// 		secure: true, //是否使用https
+		// 		pathRewrite: { '^/': '' }
+		// 	},
+		// }
 	},
 	// 如果你不需要使用eslint，把lintOnSave设为false即可
 	lintOnSave: true,
