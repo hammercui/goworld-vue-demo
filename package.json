@@ -51,6 +51,7 @@
     "node-sass": "^4.13.1",
     "path": "^0.12.7",
     "sass-loader": "^8.0.2",
+    "tern": "^0.24.3",
     "terser-webpack-plugin": "^2.3.4",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2",
@@ -69,7 +70,7 @@
       "no-unused-vars": 0,
       "vue/no-use-v-if-with-v-for": 0,
       "no-dupe-keys": 0,
-      "no-undef":0
+      "no-undef": 0
     },
     "parserOptions": {
       "parser": "babel-eslint"
