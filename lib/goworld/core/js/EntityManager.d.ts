@@ -35,3 +35,8 @@ export declare function getEntity(eid: string): GhostEntity;
  * @param {*} eid
  */
 export declare function destoryEntity(eid: string): void;
+/**
+ * 从对象池删除
+ * @param e
+ */
+export declare function delEntity(e: GhostEntity): void;

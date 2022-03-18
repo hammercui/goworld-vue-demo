@@ -2,6 +2,7 @@ import Proto from './Proto'
 import * as EntityManager from './EntityManager'
 import GhostEntity from './GhostEntity'
 import {RecvEnum,SIZE_FIELD_SIZE,CLIENTID_LENGTH,ENTITYID_LENGTH} from './Consts'
+import GoWordArgs from './GoWorldArgs';
 var msgpack = require("msgpack");
 
 /**
@@ -10,7 +11,7 @@ var msgpack = require("msgpack");
  */
 export default class GameClient{
     public serverAddr: string ="127.0.0.1"
-    public serverPort: string ="14001"
+    public serverPort: number = 14001
     private recvBuf: ArrayBuffer
     private recvStatus: RecvEnum
     private recvPayloadLen: number
@@ -20,7 +21,7 @@ export default class GameClient{
     private _sendPacketWritePos: number
     private websocket: WebSocket
 
-    GameClient(){
+    public GameClient(){
         this.recvBuf = new ArrayBuffer(1024*1024)
         this.recvStatus = RecvEnum._RECV_PAYLOAD_LENGTH
         this.recvPayloadLen = 0
@@ -34,7 +35,9 @@ export default class GameClient{
     /**
      * 连接
      */
-    connect = () =>{
+    connect = (opts: GoWordArgs) =>{
+        this.serverAddr = opts.ip
+        this.serverPort = opts.port
         var serverAddr = 'ws://'+this.serverAddr+':'+this.serverPort+'/ws'
         console.log("正在连接 " + serverAddr + ' ...')
         var websocket = new WebSocket(serverAddr)
@@ -334,10 +337,16 @@ export default class GameClient{
         this._sendPacket.setUint32(this._sendPacketWritePos, v, true)
         this._sendPacketWritePos += 4
     }
+    appendFloat32 = (v)=>{
+        this._sendPacket.setFloat32(this._sendPacketWritePos,v,true)
+        this._sendPacketWritePos += 4
+    }
+
     appendBytes = (b) => {
         new Uint8Array(this._sendPacket.buffer, this._sendPacketWritePos, b.length).set(b, 0);  
         this._sendPacketWritePos += b.length
     }
+
     appendEntityID = (eid) => {
         let b = this.string2Uint8Array(eid)
         console.log("convert", eid, "to", b, b.length)
@@ -376,7 +385,7 @@ export default class GameClient{
     }
 
 
-    callServerMethod = (entity, method, args) => {
+    public callServerMethod = (entity: GhostEntity, method, args) => {
         console.log(">>> "+entity.toString()+"."+method+"("+args+")")
         // 	packet.AppendUint16(MT_CALL_ENTITY_METHOD_FROM_CLIENT)
         // 	packet.AppendEntityID(id)
@@ -387,6 +396,16 @@ export default class GameClient{
         this.appendEntityID(entity.ID)
         this.appendVarStr(method)
         this.appendArgs(args)
+        this.sendPacket()
+    }
+
+    public syncPositionYawFromClient = (entity: GhostEntity,x,y,z,yaw: number)=>{
+        this.appendUint16(Proto.MT_SYNC_POSITION_YAW_FROM_CLIENT)
+        this.appendEntityID(entity.ID)
+        this.appendFloat32(x);
+        this.appendFloat32(y);
+        this.appendFloat32(z);
+        this.appendFloat32(yaw)
         this.sendPacket()
     }
 }

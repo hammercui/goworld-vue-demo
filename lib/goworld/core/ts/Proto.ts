@@ -2,9 +2,9 @@
  * 协议
  */
 
-export default class Proto{
-        static SIZE_FIELD_SIZE = 4;
-        static MAX_PAYLOAD_LEN = 1 * 1024 * 1024;
+export default class Proto{ 
+        public static SIZE_FIELD_SIZE = 4;
+        public static MAX_PAYLOAD_LEN = 1 * 1024 * 1024;
 
         static CLIENTID_LENGTH = 16;
         static ENTITYID_LENGTH = 16;

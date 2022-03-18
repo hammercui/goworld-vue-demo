@@ -19,6 +19,8 @@ export default class GhostEntity {
     onTick: any;
     onUpdatePos: any;
     onUpdateQua: any;
+    private isDestroyed;
+    private _this;
     /**
      * 构造函数
      * @param {*} typeName
@@ -27,7 +29,7 @@ export default class GhostEntity {
      */
     constructor(typeName: string, entityID: string, x: any, y: any, z: any, yaw: number, attrs: any);
     toString: () => string;
-    onCreated: () => void;
+    onCreated(): void;
     /**
      * 调用服务器方法
      * @param {*} method

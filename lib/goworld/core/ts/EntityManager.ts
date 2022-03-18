@@ -1,9 +1,13 @@
 /**
  * entity实例管理类，缓存所有entity实例
  */
+import { forEach } from 'core-js/library/js/array'
 import GhostEntity from './GhostEntity'
+import GhostSpace from './GhostSpace'
+
 
 var player: GhostEntity
+var space: GhostSpace
 
 /**
  * 获得player
@@ -40,20 +44,34 @@ export function createEntity(typeName,eid: string,isPlayer: boolean,x,y,z,yaw: n
     console.log("MT_CREATE_ENTITY_ON_CLIENT", "isPlayer", isPlayer, 'eid', eid,"typeName", typeName, 'position', x, y, z, 'yaw', yaw, 'clientData', JSON.stringify(clientData))
     let e = new GhostEntity(typeName,eid,x,y,z,yaw,clientData)
     entities[eid] = e
+    e.onCreated()
     if(clientData.hasOwnProperty('ownerSyncPos') && clientData['ownerSyncPos']){
         e.ownerSyncPos = clientData['ownerSyncPos']
     }
-    if(isPlayer){
-        e.isPlayer = true
-        if(player){
-            console.error("玩家对象重复：老玩家"+player.toString() + "，新玩家：", e.toString())
+
+    if (e.isSpace()) {
+        if (space) {
+            space.destroy()
         }
-        player = e
+        space = e as GhostSpace
+        onEnterSpace()
+    }else{
+        if(isPlayer){
+            e.isPlayer = true
+            if(player){
+                console.error("玩家对象重复：老玩家"+player.toString() + "，新玩家：", e.toString())
+            }
+            player = e
+            player.onBecomePlayer()
+        }
+
+        if (space) {
+            e.onEnterSpace()
+        }
     }
-    e.onCreated()
-    if (player == e) {
-        e.onBecomePlayer()
-    }
+    
+    //todo 通知消息中心创建成功
+
 }
 
 /**
@@ -86,4 +104,47 @@ export function  destoryEntity(eid: string){
     e.destroy()
     
     delete entities[eid]
+}
+
+/**
+ * 从对象池删除
+ * @param e 
+ */
+export function delEntity(e: GhostEntity){
+    delete entities[e.ID]
+    if (space && space.ID == e.ID) {
+        space = null
+        onLeaveSpace();
+    }else{
+        if (player && player.ID == e.ID) {
+            player = null
+        }
+        if (space) {
+            e.onLeaveSpace()
+        }
+    }
+}
+
+
+/**
+ * 所有entity离开space
+ */
+function onLeaveSpace(){
+    entities.forEach((e,key)=>{
+        if (!e.isSpace()) {
+            e.onLeaveSpace()
+        }
+    })
+}
+
+/**
+ * space创建成功，所有玩家进入space
+ */
+function onEnterSpace(){
+    console.log("EntityManager","space init,所有entity执行enterSpace")
+    entities.forEach((e,key)=>{
+        if (!e.isSpace()) {
+            e.onEnterSpace()
+        }
+    })
 }
