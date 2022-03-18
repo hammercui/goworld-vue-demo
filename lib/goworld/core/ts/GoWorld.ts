@@ -3,7 +3,7 @@
  */
 import GameClient from './GameClient'
 import GoWorldArgs from './GoWorldArgs';
-
+import * as EntityManager from './EntityManager';
 
 export default class GoGorld{
 
@@ -16,9 +16,12 @@ export default class GoGorld{
     //entity销毁
 
     /**
-     * 滴答
+     * 滴答实体,由外部定时器调度
      */
-    public static tick: Function = () => {}
+    public static tickEntity(){
+        EntityManager.tick();
+    }
+
     
     /**
      * 启动连接
