@@ -1,7 +1,6 @@
 /**
  * entity实例管理类，缓存所有entity实例
  */
-import { forEach } from 'core-js/library/js/array'
 import GhostEntity from './GhostEntity'
 import GhostSpace from './GhostSpace'
 
@@ -123,6 +122,14 @@ export function delEntity(e: GhostEntity){
             e.onLeaveSpace()
         }
     }
+}
+
+export function  tick(){
+    entities.forEach(entity =>{
+        if (entity.tickEnable) {
+            entity.tick()
+        }
+    })
 }
 
 

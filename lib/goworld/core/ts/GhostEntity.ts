@@ -21,7 +21,7 @@ export default class GhostEntity {
     public onEnterSpaceAction = null;
     public onLeaveSpaceAction: Function = null;
     public onDestroyGhostAction: Function = null;
-    public onTick = null;
+    public onTickAction = null;
     public onUpdatePos = null;
     public onUpdateQua = null;
     
@@ -188,11 +188,28 @@ export default class GhostEntity {
 
     }
 
+    /**
+     * 同步自身坐标给服务端
+     * @param x 
+     * @param y 
+     * @param z 
+     * @param yaw 
+     * @returns 
+     */
     public syncPositionYawFromClient = (x,y,z,yaw: number): void =>{
         if (!this.ownerSyncPos) {
             return
         }
         //todo 发送坐标
         GoWorld.gameClient.syncPositionYawFromClient(this, x, y, z, yaw)
+    }
+
+    /**
+     * 滴答
+     */
+    public tick = ()=>{
+        if (this.onTickAction) {
+            this.onTickAction();
+        }
     }
 }

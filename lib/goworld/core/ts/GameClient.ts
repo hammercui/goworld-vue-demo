@@ -158,7 +158,7 @@ export default class GameClient{
                 this.handleDestroyEntityOnClient(payload)
                 break
              case Proto.MT_CALL_FILTERED_CLIENTS:
-                 this.handleCallFilteredClients(payload)
+                this.handleCallFilteredClients(payload)
                  break;
              case Proto.MT_NOTIFY_MAP_ATTR_CHANGE_ON_CLIENT:
                 this.handleNotifyMapAttrChangeOnClient(payload)

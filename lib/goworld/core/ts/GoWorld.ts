@@ -18,7 +18,7 @@ export default class GoGorld{
     /**
      * 滴答实体,由外部定时器调度
      */
-    public static tickEntity(){
+    public static tick(){
         EntityManager.tick();
     }
 
